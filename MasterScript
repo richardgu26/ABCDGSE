@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# To use this, you need to have installed:
+# * Octave, Julia and Open MPI
+# * the MPI package for Octave
+# * the MPI, Distances and Distributions package for Julia
+# * the code at http://pareto.uab.es/mcreel/Econometrics/Econometrics.tgz
+#   installed in your Octave working path
+# * this is pretty easy to achieve using Linux, and I'm
+#   happy to answer questions regarding getting it to work
+
+# Running this takes about 24 hours on a 32 core machine
+# you can comment out the selection block to use my
+# pre-selected statistics (which were obtained by running the
+# block. This will speed things up, so that you see estimation
+# results reasonably quickly
+
+alias mpirun="mpirun -x LD_PRELOAD=libmpi.so"
+LOCATION=`pwd`
+
+# first make the pool of draws from param space, and associated statistics
+# in order to do selection, and start up the AIS algorithm
+cd $LOCATION/GenData
+./propagate
+sync
+orte-clean
+mpirun -np 26 octave --eval make_simdata
+orte-clean
+./cleanup
+sync
+octave --eval "load simdata.paramspace; simdata = clean_data(simdata); save -ascii simdata.dsge simdata"
+
+# select statistics: takes several hours, so it's
+# commented out, and instead I provide the result of running
+# this block in the file selected.dsge, in the AIS
+# directory. If you run this block, it will be over
+# written
+# cd $LOCATION/SelectStatistics
+# rm simdata.dsge
+# ln -s ../GenData/simdata.dsge ./
+# sync
+# mpirun -np 26 julia SelectDSGE.jl
+# orte-clean
+# octave --eval Analyze.m
+# sync
+# cp selected.dsge ../AIS/selected
+
+# do the estimation using importance sampling and
+# local linear regression
+cd $LOCATION/AIS
+./propagate
+sync
+rm simdata.paramspace
+ln -s ../GenData/simdata.dsge simdata.paramspace
+mpirun -np 26 octave --eval DSGE_montecarlo
+orte-clean
