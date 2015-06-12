@@ -1,0 +1,16 @@
+# Created by Octave 3.8.2, Fri Jun 05 13:19:56 2015 CEST <michael@pelican>
+# name: lb_ub
+# type: matrix
+# rows: 9
+# columns: 2
+ 0.2 0.4
+ 0.95 0.995
+ 0.01 0.1
+ 0 5
+ 0 0.99
+ 0 0.1
+ 0 0.99
+ 0 0.1
+ 0.25 0.375
+
+
