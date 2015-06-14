@@ -16,6 +16,6 @@ or
 
 http://pareto.uab.es/mcreel/Econometrics/Econometrics.zip
 
-To replicate the results, execute MasterScript from the bash prompt.
+To replicate the results, execute "sh MasterScript" from the bash prompt.
 
 For questions, write to michael.creel@uab.es
