@@ -1,4 +1,4 @@
-outfile = "ThetahatsDesign1.txt";
+outfile = "ThetahatsLocalLinear50.out";
 mc_reps = 500;
 
 % first design used 10 iters, nparticles = 600
@@ -9,8 +9,8 @@ nparticles = 300; % number per round
 particlequantile = 20; % keep the top % of particles
 nparticles2 = 600; % number for last round
 verbose = false;
-AISdraws = 10000; # number of draws from final AIS density
-nneighbors = 25;
+AISdraws = 5000; # number of draws from final AIS density
+nneighbors = 300;
 
 % design
 parameters; % loaded from Common to ensure sync with Gendata
@@ -82,15 +82,15 @@ for rep = 1:mc_reps
         thetas = thetas(test,:);
         Zs = Zs(test,:);
         Z = [Zn; Zs];
-        
-        q = quantile(Z,0.99);
+        Z2 = Z;
+        q = quantile(Z2,0.99);
 	    test = Z < q;
-        Z = test.*Z + (1-test).*q;
-	    q = quantile(-Z,0.99);
-	    test = -Z < q;
-	    Z = test.*Z - (1-test).*q;
-        
-        Z = st_norm(Z);
+        Z2 = test.*Z2 + (1-test).*q;
+	    q = quantile(-Z2,0.99);
+	    test = -Z2 < q;
+	    Z2 = test.*Z2 - (1-test).*q;
+        stdZ = std(Z2);
+        Z = Z./stdZ;
 		Zs = Z(2:end,:);
 		Zn = Z(1,:);
 
@@ -98,6 +98,8 @@ for rep = 1:mc_reps
         [nn_idx, dd] = nearest_neighbors(Zn, Zs, nneighbors);
         % particles with positive weight
         thetas = thetas(nn_idx,:);
+        Zs = Zs(nn_idx,:);
+        % weights
         AISweights = prior(thetas) ./ AIS_density(thetas, particles(:,1:nparams));
         weight = dd';
         if max(weight) > 0
@@ -107,8 +109,12 @@ for rep = 1:mc_reps
         endif
         weight = AISweights.*normpdf(weight); # AIS_weights != 1 is for SBIL by AIS
         weight = weight/sum(weight(:));
-        thetahat = sum(diag(weight)*thetas);
-		
+        % local linear regression
+        X = [ones(rows(Zs),1) Zs];
+        XX = diag(weight)*X;
+        b = inv(X'*XX)*XX'*thetas;
+        thetahat = [1 Zn]*b;
+		% store results
         thetahats(rep,:) = thetahat;
 		FN = fopen (outfile, "a");
 		fprintf(FN, "%f ", thetahat);
