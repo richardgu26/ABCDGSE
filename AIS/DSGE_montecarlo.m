@@ -55,7 +55,7 @@ for rep = 1:mc_reps
 		while !ok
 			USERsimulation;
 			Zn = aux_stat(data);
-			ok = Zn(:,1) != -1000;
+			ok = Zn(1,:) != -1000;
 		endwhile	
 		Zn = Zn(asbil_selected,:);
 		MPI_Send(Zn, 0, mytag, CW);
