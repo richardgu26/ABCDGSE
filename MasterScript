@@ -41,7 +41,7 @@ octave --eval "load simdata.paramspace; simdata = clean_data(simdata); save -asc
 # sync
 # mpirun -np 26 julia SelectDSGE.jl
 # orte-clean
-# octave --eval Analyze.m
+# octave --eval Analyze
 # sync
 # cp selected.dsge ../AIS/selected
 

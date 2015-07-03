@@ -80,7 +80,6 @@ nodes = MPI.Comm_size(comm)
     rt = 0.75 # rate of temp reduction
     r = 10; # total evals is this number times dimZ
     maxevals = r*dimZ
-    maxevals = 1; 
     # do sa
     if node>0
         for i = 1:round(Int,reps/(nodes-1))
