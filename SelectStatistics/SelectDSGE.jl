@@ -26,8 +26,8 @@ nodes = MPI.Comm_size(comm)
     reps = 25 # how many repetitions of algorithm
 
     nparams = 9 # number of parameters in data set
-    S = 20000  # size of paramspace sample
-    S2 = 500  # size of test sample
+    S = 30000  # size of paramspace sample
+    S2 = 1000  # size of test sample
  
     # data file to read, initial nparams columns are parameters,
     # rest are candidate statistics
