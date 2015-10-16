@@ -15,20 +15,22 @@
 # block. This will speed things up, so that you see estimation
 # results reasonably quickly
 
+export OPENBLAS_NUM_THREADS=1
 alias mpirun="mpirun -x LD_PRELOAD=libmpi.so"
 LOCATION=`pwd`
 
 # first make the pool of draws from param space, and associated statistics
-# in order to do selection, and start up the AIS algorithm
-cd $LOCATION/GenData
-./propagate
-sync
-orte-clean
-mpirun -np 26 octave --eval make_simdata
-orte-clean
-./cleanup
-sync
-octave --eval "load simdata.paramspace; simdata = clean_data(simdata); save -ascii simdata.dsge simdata"
+# in order to do selection, and start up the AIS algorithm. Uncomment
+# if you don't want to use the pre-generated files
+#cd $LOCATION/GenData
+#./propagate
+#sync
+#orte-clean
+#mpirun -np 26 octave --eval make_simdata
+#orte-clean
+#./cleanup
+#sync
+#octave --eval "load simdata.paramspace; simdata = clean_data(simdata); save -ascii simdata.dsge simdata"
 
 # select statistics: takes several hours, so it's
 # commented out, and instead I provide the result of running
@@ -45,8 +47,9 @@ octave --eval "load simdata.paramspace; simdata = clean_data(simdata); save -asc
 # sync
 # cp selected.dsge ../AIS/selected
 
-# do the estimation using importance sampling and
-# local linear regression
+# do the estimation using importance sampling,
+# and nonparametric fitting. Bandwidths are 
+# already pre-tuned
 cd $LOCATION/AIS
 ./propagate
 sync
