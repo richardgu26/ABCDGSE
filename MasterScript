@@ -52,5 +52,5 @@ cd $LOCATION/AIS
 sync
 rm simdata.paramspace
 ln -s ../GenData/simdata.dsge simdata.paramspace
-mpirun -np 26 octave --eval DSGE_montecarlo
+mpirun -np 31 octave --eval DSGE_montecarlo
 orte-clean
