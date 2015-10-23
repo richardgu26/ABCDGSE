@@ -1,3 +1,8 @@
+% note: the selected bandwidths are not
+% the correct tuned ones in the paper's 
+% results - I forget to save those
+% To recover them, follow the steps
+% in README
 outfile = "junk.out";
 mc_reps = 1000; % number of MC reps
 nworkers = 20;  % number of worker MPI ranks
