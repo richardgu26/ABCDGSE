@@ -8,7 +8,7 @@ computed using importance sampling and local linear nonparametric
 regression. 
 
 Requires Open MPI, Julia (with MPI and Distances packages), Octave (with MPI
-package) and other supporting code available at https://github.com/mcreel/ABCDGSE
+package) and other supporting code available at https://github.com/mcreel/Econometrics
 
 To replicate the results, execute "sh MasterScript" from the bash prompt.
 
