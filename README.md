@@ -1,7 +1,9 @@
 # ABCDGSE
 This directory holds the files for replicating the procedure used
-to get results for the DSGE model in the paper "Indirect Likelihood
-Inference" by Michael Creel and Dennis Kristensen
+to get results for the DSGE model in the paper "Bayesian Indirect
+Inference and the ABC of GMM" by Creel, Gao, Hong and Kristensen, which
+will be available shortly. The file DSGE.pdf is an extract, which
+gives a description and the results.
 
 The estimator is an Approximate Bayesian Computing estimator,
 computed using importance sampling and local linear nonparametric
